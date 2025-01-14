@@ -1,0 +1,12 @@
+[package]
+name = "freeeta"
+version = "0.1.0"
+edition = "2021"
+authors = ["Administroot <boli_lemon@foxmail.com>"]
+description = "A fast, elegant & free ETA analysis utility powered by 🦀 Rust, 🧊 iced."
+license = "GPL-3.0"
+repository = "https://github.com/Administroot/FreeEta" 
+
+[dependencies]
+iced = {version = "0.13.1", features = ["image", "svg", "tokio", "advanced"] }
+tokio = {version = "1.43.0", features = ["time", "full"]}
