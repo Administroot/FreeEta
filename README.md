@@ -22,10 +22,13 @@ A fast, elegant & free ETA analysis utility powered by 🦀 Rust, 🧊 iced.
   <img src="static/svg/get_it_on_github.svg" alt="Get it on Github" width="200"/>
 </a>
 
-Support windows / linux / MacOS! Or use `cargo` to try it out:
+Support windows / linux / MacOS! 
+
+Or use `cargo` to try it out:
 
 ```bash
 cargo install --git https://github.com/administroot/FreeEta.git
+```
 
 ## Why "FreeEta"?
 

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::fs::{self, File};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
-struct FreeEtaConfig {
+pub struct FreeEtaConfig {
     /// Software name: typically "FreeEta"
     name: String,
     /// Language: ["zh-cn", "en-us"]
@@ -12,7 +12,7 @@ struct FreeEtaConfig {
 }
 
 /// Read FreeEta config from ./
-pub fn read_freeeta_config() -> Result<(), serde_yml::Error> {
+pub fn read_freeeta_config() -> Result<FreeEtaConfig, serde_yml::Error> {
     let path = "config.yml";
     if !fs::exists(path).unwrap() {
         // If config doesn't exist, create a default config.
@@ -24,11 +24,11 @@ pub fn read_freeeta_config() -> Result<(), serde_yml::Error> {
         };
         let yaml = serde_yml::to_string(&default_config)?;
         fs::write(path, yaml).expect("Cannot write config.yml");
+        return Ok(default_config);
     } else {
         // If config exists, read from it.
         let contents = fs::read_to_string(path).expect("Cannot read config.yml");
         let deserialized_config: FreeEtaConfig = serde_yml::from_str(&contents)?;
-        // println!("{:?}", deserialized_config);
+        return Ok(deserialized_config);
     }
-    Ok(())
 }

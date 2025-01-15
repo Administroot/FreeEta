@@ -5,7 +5,9 @@ mod main_menu;
 use iced;
 
 fn main() -> iced::Result {
-    freeeta_yml::read_freeeta_config().expect("[ERROR] CONFIG ERROR");
+    let freeeta_yml = freeeta_yml::read_freeeta_config().expect("[ERROR] CONFIG ERROR");
+    // TODO: Deal with the config struct.
+    println!("{:?}", freeeta_yml);
     iced::application(
         "FreeEta",
         main_menu::FreeEta::update,
