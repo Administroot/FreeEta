@@ -1,6 +1,8 @@
 use iced::{
-    widget::{column, container, horizontal_space, pick_list, row, svg, svg::Handle},
-    ContentFit, Element, Task,
+    widget::{
+        column, container, horizontal_space, pick_list, row, svg, svg::Handle, text::Shaping,
+    },
+    ContentFit, Element, Length, Task,
 };
 
 use crate::freeeta_styles;
@@ -17,7 +19,7 @@ impl Default for FreeEta {
 
 #[derive(Debug, Clone)]
 pub enum MainMenuMessage {
-    DoNothing,
+    FilePicklistMsg(String),
 }
 
 impl FreeEta {
@@ -30,7 +32,13 @@ impl FreeEta {
         )
     }
 
-    pub fn update(&mut self, _message: MainMenuMessage) -> Task<MainMenuMessage> {
+    pub fn update(&mut self, message: MainMenuMessage) -> Task<MainMenuMessage> {
+        match message {
+            MainMenuMessage::FilePicklistMsg(s) => {
+                // TODO: Divide different sections
+                self.file_picklist = Some(s);
+            }
+        }
         Task::none()
     }
 
@@ -44,39 +52,11 @@ impl FreeEta {
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
-                    |_| MainMenuMessage::DoNothing,
+                    |s| MainMenuMessage::FilePicklistMsg(s),
                 )
-                .placeholder("File")
-                .style(freeeta_styles::pick_list_unselected),
-                // Graphics
-                pick_list(
-                    ["Other choices 1", "Other choices 2"]
-                        .map(|s| s.to_string())
-                        .to_vec(),
-                    self.file_picklist.clone(),
-                    |_| MainMenuMessage::DoNothing,
-                )
-                .placeholder("Graphics")
-                .style(freeeta_styles::pick_list_unselected),
-                // Tools
-                pick_list(
-                    ["Other choices 1", "Other choices 2"]
-                        .map(|s| s.to_string())
-                        .to_vec(),
-                    self.file_picklist.clone(),
-                    |_| MainMenuMessage::DoNothing,
-                )
-                .placeholder("Tools")
-                .style(freeeta_styles::pick_list_unselected),
-                // Helps
-                pick_list(
-                    ["Other choices 1", "Other choices 2"]
-                        .map(|s| s.to_string())
-                        .to_vec(),
-                    self.file_picklist.clone(),
-                    |_| MainMenuMessage::DoNothing,
-                )
-                .placeholder("Helps")
+                .width(Length::Shrink)
+                .placeholder("📁 File")
+                .text_shaping(Shaping::Advanced)
                 .style(freeeta_styles::pick_list_unselected),
                 // Space[ ]
                 horizontal_space(),
@@ -92,5 +72,9 @@ impl FreeEta {
             ]
         )
         .into()
+    }
+
+    pub fn theme(&self) -> iced::Theme {
+        iced::Theme::Light
     }
 }
