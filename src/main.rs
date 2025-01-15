@@ -14,5 +14,6 @@ fn main() -> iced::Result {
         main_menu::FreeEta::view,
     )
     .theme(main_menu::FreeEta::theme)
+    .subscription(main_menu::FreeEta::subscription)
     .run()
 }

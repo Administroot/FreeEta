@@ -1,4 +1,8 @@
-use iced::{border::Radius, widget::{pick_list, text}, Background, Border, Color, Theme};
+use iced::{
+    border::Radius,
+    widget::{pick_list, text},
+    Background, Border, Color, Theme,
+};
 
 // TODO: Read Theme from const in the future.
 pub fn pick_list_unselected(_theme: &Theme, _status: pick_list::Status) -> pick_list::Style {
