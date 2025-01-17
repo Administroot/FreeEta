@@ -5,14 +5,16 @@ use iced::{
     touch::Event::FingerMoved,
     widget::{
         column, container, horizontal_rule, horizontal_space, pick_list, row, svg, svg::Handle,
-        text, text::Shaping, vertical_space,
+        text, text::Shaping, vertical_space
     },
     Color, ContentFit, Element, Event, Length, Point, Subscription, Task,
 };
 
 use crate::freeeta_styles;
+use crate::bookmark;
 
 pub struct FreeEta {
+    // TODO: Actually, I don't need this member.
     file_picklist: Option<String>,
     mouse_point: Point,
 }
@@ -26,6 +28,10 @@ impl Default for FreeEta {
 #[derive(Debug, Clone)]
 pub enum MainMenuMessage {
     FilePicklistMsg(String),
+    GraphicsPicklistMsg(String),
+    AnalysisPicklistMsg(String),
+    SettingsPicklistMsg(String),
+    HelpPicklistMsg(String),
     PointUpdated(Point),
 }
 
@@ -49,6 +55,22 @@ impl FreeEta {
             MainMenuMessage::PointUpdated(p) => {
                 self.mouse_point = p;
             }
+            MainMenuMessage::GraphicsPicklistMsg(s) => {
+                // TODO: Divide different sections
+                self.file_picklist = Some(s);
+            },
+            MainMenuMessage::AnalysisPicklistMsg(s) => {
+                // TODO: Divide different sections
+                self.file_picklist = Some(s);
+            },
+            MainMenuMessage::SettingsPicklistMsg(s) => {
+                // TODO: Divide different sections
+                self.file_picklist = Some(s);
+            },
+            MainMenuMessage::HelpPicklistMsg(s) => {
+                // TODO: Divide different sections
+                self.file_picklist = Some(s);
+            },
         }
         Task::none()
     }
@@ -78,11 +100,11 @@ impl FreeEta {
                 // Graphics
                 pick_list(
                     // TODO: Please use container[svg/png]
-                    ["⛽ Pop", "🌀 Valve", "Add more..."]
+                    ["⛽ Pop", "🌀 Valve", "➕ Add more..."]
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
-                    |s| MainMenuMessage::FilePicklistMsg(s),
+                    |s| MainMenuMessage::GraphicsPicklistMsg(s),
                 )
                 .width(Length::Shrink)
                 .placeholder("💠 Graphics")
@@ -94,27 +116,39 @@ impl FreeEta {
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
-                    |s| MainMenuMessage::FilePicklistMsg(s),
+                    |s| MainMenuMessage::AnalysisPicklistMsg(s),
                 )
                 .width(Length::Shrink)
                 .placeholder("🧭 Analysis")
                 .text_shaping(Shaping::Advanced)
                 .style(freeeta_styles::pick_list_unselected),
+                // Settings
+                pick_list(
+                    ["🔮 Themes", "🗣️ Languages"]
+                        .map(|s| s.to_string())
+                        .to_vec(),
+                    self.file_picklist.clone(),
+                    |s| MainMenuMessage::SettingsPicklistMsg(s),
+                )
+                .width(Length::Shrink)
+                .placeholder("⚙️ Settings")
+                .text_shaping(Shaping::Advanced)
+                .style(freeeta_styles::pick_list_unselected),
+
                 // Help
                 pick_list(
                     [
                         "📔 FreeEta Handbook",
-                        "🗣️ Language",
                         "🌏 About FreeEta",
                         "🧊 About ICED"
                     ]
                     .map(|s| s.to_string())
                     .to_vec(),
                     self.file_picklist.clone(),
-                    |s| MainMenuMessage::FilePicklistMsg(s),
+                    |s| MainMenuMessage::HelpPicklistMsg(s),
                 )
                 .width(Length::Shrink)
-                .placeholder(" Help")
+                .placeholder("🤝 Help")
                 .text_shaping(Shaping::Advanced)
                 .style(freeeta_styles::pick_list_unselected),
                 // Space[ ]
@@ -132,6 +166,9 @@ impl FreeEta {
             horizontal_rule(0),
             // TODO: Replace it with canvas view.
             vertical_space(),
+            row![bookmark::custom_bookmark(Color::BLACK)].align_y(alignment::Vertical::Center),
+            vertical_space(),
+
             // Bottom row
             horizontal_rule(0),
             row![

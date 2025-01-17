@@ -1,6 +1,7 @@
 mod freeeta_styles;
 mod freeeta_yml;
 mod main_menu;
+mod bookmark;
 
 use iced;
 
