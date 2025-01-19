@@ -1,7 +1,7 @@
 use iced::{
-    border::Radius,
-    widget::{pick_list, text},
-    Background, Border, Color, Theme,
+    border::{rounded, Radius},
+    widget::{container, pick_list, text},
+    Background, Border, Color, Shadow, Theme, Vector,
 };
 
 // TODO: Read Theme from const in the future.
@@ -27,5 +27,18 @@ pub fn pick_list_unselected(_theme: &Theme, _status: pick_list::Status) -> pick_
 pub fn bottomline_text_unselected(_theme: &Theme) -> text::Style {
     text::Style {
         color: Some(Color::from_rgb(0.35, 0.35, 0.34)),
+    }
+}
+
+pub fn shadowed_container(_theme: &Theme) -> container::Style {
+    container::Style {
+        shadow: Shadow {
+            color: Color::from_rgb(0., 0., 0.),
+            offset: Vector { x: 0., y: 0. },
+            blur_radius: 8.,
+        },
+        background: Some(Background::Color(Color::from_rgba(255., 255., 255., 0.))),
+        border: rounded(20.),
+        ..Default::default()
     }
 }

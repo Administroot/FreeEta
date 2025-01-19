@@ -15,6 +15,7 @@ impl Bookmark {
     }
 }
 
+#[allow(dead_code)]
 pub fn custom_bookmark(color: Color) -> Bookmark {
     Bookmark::new(color)
 }
@@ -25,6 +26,7 @@ where
 {
     fn size(&self) -> Size<Length> {
         Size {
+            // widget{x: 120.0, y: 55.0} when screen{x: 1535.2, y: 191.2}
             width: Length::Shrink,
             height: Length::Shrink,
         }
@@ -36,7 +38,6 @@ where
         _renderer: &Renderer,
         _limits: &layout::Limits,
     ) -> layout::Node {
-        // widget{x: 120.0, y: 55.0} when screen{x: 1535.2, y: 191.2}
         // TODO: pub fn get_size(id: Id) -> Task<Size>
         layout::Node::new(Size::new(400., 400.))
     }
@@ -62,8 +63,7 @@ where
     }
 }
 
-impl<'a, Message, Theme, Renderer> From<Bookmark>
-    for Element<'a, Message, Theme, Renderer>
+impl<'a, Message, Theme, Renderer> From<Bookmark> for Element<'a, Message, Theme, Renderer>
 where
     Renderer: renderer::Renderer,
 {
