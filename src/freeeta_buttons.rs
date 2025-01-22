@@ -43,11 +43,9 @@ pub fn bookmark<'a>(
                 .font(font)
                 .align_y(Alignment::Center)
                 .align_x(Alignment::Center)
-                // .size(15)
                 .line_height(LineHeight::Relative(1.0)),
         )
         .style(move |theme, status| freeeta_styles::bookmark_style(theme, status, color))
-        .padding(2)
         .height(40)
         .width(80)
         .on_press(message),

@@ -30,6 +30,7 @@ pub fn bottomline_text_unselected(_theme: &Theme) -> text::Style {
     }
 }
 
+#[allow(dead_code)]
 pub fn shadowed_container(_theme: &Theme) -> container::Style {
     container::Style {
         shadow: Shadow {
@@ -54,26 +55,62 @@ fn mix_colors(color_1: Color, color_2: Color) -> Color {
 }
 
 pub fn bookmark_style(_theme: &Theme, status: button::Status, color: Color) -> button::Style {
+    let text_color = Color::BLACK;
+    let border = Border {
+        color,
+        width: 2.,
+        radius: Radius {
+            top_left: 0.,
+            top_right: 5.,
+            bottom_right: 5.,
+            bottom_left: 0.,
+        },
+    };
+
     match status {
         button::Status::Active => button::Style {
             background: Some(Background::Color(color)),
-            text_color: Color::BLACK,
+            text_color,
+            border,
             ..Default::default()
         },
         button::Status::Hovered => button::Style {
             background: Some(Background::Color(mix_colors(Color::WHITE, color))),
-            text_color: Color::BLACK,
+            text_color,
+            border,
             ..Default::default()
         },
         button::Status::Pressed => button::Style {
             background: Some(Background::Color(color)),
-            text_color: Color::BLACK,
+            text_color,
+            border,
             ..Default::default()
         },
         button::Status::Disabled => button::Style {
             background: Some(Background::Color(mix_colors(Color::TRANSPARENT, color))),
-            text_color: Color::BLACK,
+            text_color,
+            border,
             ..Default::default()
         },
+    }
+}
+
+#[allow(dead_code)]
+// Container with right-side round border
+pub fn half_rounded_container(_theme: &Theme, color: Color) -> container::Style {
+    container::Style {
+        shadow: Shadow::default(),
+        background: Some(Background::Color(Color::TRANSPARENT)),
+        border: Border {
+            color,
+            width: 2.,
+            radius: Radius {
+                top_left: 0.,
+                top_right: 5.,
+                bottom_right: 5.,
+                bottom_left: 0.,
+            },
+        },
+        ..Default::default()
     }
 }

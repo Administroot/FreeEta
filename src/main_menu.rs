@@ -174,9 +174,9 @@ impl FreeEta {
                         Color::from_rgb(0.95, 0.6, 0.)
                     ),
                 ]
+                .spacing(10.)
                 .align_x(alignment::Horizontal::Left)
             )
-            .style(freeeta_styles::shadowed_container)
             .align_x(alignment::Horizontal::Left),
             vertical_space(),
             // Bottom row
