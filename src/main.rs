@@ -1,4 +1,5 @@
-mod bookmark;
+mod freeeta_buttons;
+mod freeeta_picklists;
 mod freeeta_styles;
 mod freeeta_yml;
 mod main_menu;

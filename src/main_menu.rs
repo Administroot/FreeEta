@@ -1,16 +1,16 @@
+use iced::widget::{svg, text};
 use iced::{
     alignment,
     event::{self, Status},
     mouse::Event::CursorMoved,
     touch::Event::FingerMoved,
     widget::{
-        column, container, horizontal_rule, horizontal_space, image, pick_list, row, svg,
-        svg::Handle, text, text::Shaping, vertical_space,
+        column, container, horizontal_rule, horizontal_space, row, svg::Handle, vertical_space,
     },
-    Color, ContentFit, Element, Event, Length, Point, Subscription, Task,
+    Color, ContentFit, Element, Event, Font, Point, Subscription, Task,
 };
 
-use crate::freeeta_styles;
+use crate::{freeeta_buttons, freeeta_picklists::functional_picklist, freeeta_styles};
 
 pub struct FreeEta {
     // TODO: Actually, I don't need this member.
@@ -32,6 +32,7 @@ pub enum MainMenuMessage {
     SettingsPicklistMsg(String),
     HelpPicklistMsg(String),
     PointUpdated(Point),
+    DoNothing,
 }
 
 impl FreeEta {
@@ -70,6 +71,7 @@ impl FreeEta {
                 // TODO: Divide different sections
                 self.file_picklist = Some(s);
             }
+            MainMenuMessage::DoNothing => {}
         }
         Task::none()
     }
@@ -79,7 +81,7 @@ impl FreeEta {
             // Funtion row
             row![
                 // File
-                pick_list(
+                functional_picklist(
                     [
                         "🆕 New.. ",
                         "📂 Open..",
@@ -91,60 +93,50 @@ impl FreeEta {
                     .to_vec(),
                     self.file_picklist.clone(),
                     |s| MainMenuMessage::FilePicklistMsg(s),
+                    "📁 File"
                 )
-                .width(Length::Shrink)
-                .placeholder("📁 File")
-                .text_shaping(Shaping::Advanced)
-                .style(freeeta_styles::pick_list_unselected),
+                .style(freeeta_styles::functional_picklist_style),
                 // Graphics
-                pick_list(
-                    // TODO: Please use container[svg/png]
+                functional_picklist(
+                    // FIXME: Better use container[svg/png]
                     ["⛽ Pop", "🌀 Valve", "➕ Add more..."]
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
                     |s| MainMenuMessage::GraphicsPicklistMsg(s),
+                    "💠 Graphics"
                 )
-                .width(Length::Shrink)
-                .placeholder("💠 Graphics")
-                .text_shaping(Shaping::Advanced)
-                .style(freeeta_styles::pick_list_unselected),
+                .style(freeeta_styles::functional_picklist_style),
                 // Analysis
-                pick_list(
+                functional_picklist(
                     ["🌲 Draw ETA Tree", "📉 Calculate Success & Failure Rates"]
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
                     |s| MainMenuMessage::AnalysisPicklistMsg(s),
+                    "🧭 Analysis"
                 )
-                .width(Length::Shrink)
-                .placeholder("🧭 Analysis")
-                .text_shaping(Shaping::Advanced)
-                .style(freeeta_styles::pick_list_unselected),
+                .style(freeeta_styles::functional_picklist_style),
                 // Settings
-                pick_list(
+                functional_picklist(
                     ["🔮 Themes", "🗣️ Languages"]
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
                     |s| MainMenuMessage::SettingsPicklistMsg(s),
+                    "⚙️ Settings"
                 )
-                .width(Length::Shrink)
-                .placeholder("⚙️ Settings")
-                .text_shaping(Shaping::Advanced)
-                .style(freeeta_styles::pick_list_unselected),
+                .style(freeeta_styles::functional_picklist_style),
                 // Help
-                pick_list(
+                functional_picklist(
                     ["📔 FreeEta Handbook", "🌏 About FreeEta", "🧊 About ICED"]
                         .map(|s| s.to_string())
                         .to_vec(),
                     self.file_picklist.clone(),
                     |s| MainMenuMessage::HelpPicklistMsg(s),
+                    "🤝 Help"
                 )
-                .width(Length::Shrink)
-                .placeholder("🤝 Help")
-                .text_shaping(Shaping::Advanced)
-                .style(freeeta_styles::pick_list_unselected),
+                .style(freeeta_styles::functional_picklist_style),
                 // Space[ ]
                 horizontal_space(),
                 // FreeEta logo
@@ -163,14 +155,24 @@ impl FreeEta {
             // TODO: Replace it with canvas view.
             container(
                 column![
-                    row![
-                        // FIXME: Need to define a custom widget!
-                        image("static/png/Bookmark_View").content_fit(ContentFit::ScaleDown)
-                    ],
-                    // horizontal_space(),
-                    // text("Middle"),
-                    // horizontal_space(),
-                    // text("Right"),
+                    freeeta_buttons::bookmark(
+                        MainMenuMessage::DoNothing,
+                        Font::default(),
+                        "VIEW",
+                        Color::from_rgb(0.92, 0.21, 0.36)
+                    ),
+                    freeeta_buttons::bookmark(
+                        MainMenuMessage::DoNothing,
+                        Font::default(),
+                        "ETA",
+                        Color::from_rgb(0., 0.64, 0.51)
+                    ),
+                    freeeta_buttons::bookmark(
+                        MainMenuMessage::DoNothing,
+                        Font::default(),
+                        "Export",
+                        Color::from_rgb(0.95, 0.6, 0.)
+                    ),
                 ]
                 .align_x(alignment::Horizontal::Left)
             )

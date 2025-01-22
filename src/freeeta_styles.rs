@@ -1,11 +1,11 @@
 use iced::{
     border::{rounded, Radius},
-    widget::{container, pick_list, text},
+    widget::{button, container, pick_list, text},
     Background, Border, Color, Shadow, Theme, Vector,
 };
 
 // TODO: Read Theme from const in the future.
-pub fn pick_list_unselected(_theme: &Theme, _status: pick_list::Status) -> pick_list::Style {
+pub fn functional_picklist_style(_theme: &Theme, _status: pick_list::Status) -> pick_list::Style {
     pick_list::Style {
         text_color: Color::from_rgb(0.09, 0.02, 0.08),
         placeholder_color: Color::from_rgb(0.09, 0.02, 0.08),
@@ -33,12 +33,47 @@ pub fn bottomline_text_unselected(_theme: &Theme) -> text::Style {
 pub fn shadowed_container(_theme: &Theme) -> container::Style {
     container::Style {
         shadow: Shadow {
-            color: Color::from_rgb(0., 0., 0.),
+            color: Color::BLACK,
             offset: Vector { x: 0., y: 0. },
             blur_radius: 8.,
         },
-        background: Some(Background::Color(Color::from_rgba(255., 255., 255., 0.))),
+        background: Some(Background::Color(Color::BLACK)),
         border: rounded(20.),
         ..Default::default()
+    }
+}
+
+/// Returns the average of two colors; color intensity is fixed to 100%
+fn mix_colors(color_1: Color, color_2: Color) -> Color {
+    Color {
+        r: (color_1.r + color_2.r) / 2.0,
+        g: (color_1.g + color_2.g) / 2.0,
+        b: (color_1.b + color_2.b) / 2.0,
+        a: 1.0,
+    }
+}
+
+pub fn bookmark_style(_theme: &Theme, status: button::Status, color: Color) -> button::Style {
+    match status {
+        button::Status::Active => button::Style {
+            background: Some(Background::Color(color)),
+            text_color: Color::BLACK,
+            ..Default::default()
+        },
+        button::Status::Hovered => button::Style {
+            background: Some(Background::Color(mix_colors(Color::WHITE, color))),
+            text_color: Color::BLACK,
+            ..Default::default()
+        },
+        button::Status::Pressed => button::Style {
+            background: Some(Background::Color(color)),
+            text_color: Color::BLACK,
+            ..Default::default()
+        },
+        button::Status::Disabled => button::Style {
+            background: Some(Background::Color(mix_colors(Color::TRANSPARENT, color))),
+            text_color: Color::BLACK,
+            ..Default::default()
+        },
     }
 }
