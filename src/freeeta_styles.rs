@@ -54,7 +54,22 @@ fn mix_colors(color_1: Color, color_2: Color) -> Color {
     }
 }
 
-pub fn bookmark_style(_theme: &Theme, status: button::Status, color: Color) -> button::Style {
+/// Half transparency of the given color.
+fn half_transparency(color: Color) -> Color {
+    Color {
+        r: color.r,
+        g: color.g,
+        b: color.b,
+        a: color.a / 2.0,
+    }
+}
+
+pub fn bookmark_style(
+    _theme: &Theme,
+    status: button::Status,
+    color: Color,
+    is_actived: bool,
+) -> button::Style {
     let text_color = Color::BLACK;
     let border = Border {
         color,
@@ -67,27 +82,27 @@ pub fn bookmark_style(_theme: &Theme, status: button::Status, color: Color) -> b
         },
     };
 
-    match status {
-        button::Status::Active => button::Style {
+    match (status, is_actived) {
+        (button::Status::Active, true) => button::Style {
             background: Some(Background::Color(color)),
             text_color,
             border,
             ..Default::default()
         },
-        button::Status::Hovered => button::Style {
+        (button::Status::Hovered, _) => button::Style {
             background: Some(Background::Color(mix_colors(Color::WHITE, color))),
             text_color,
             border,
             ..Default::default()
         },
-        button::Status::Pressed => button::Style {
+        (button::Status::Pressed, _) => button::Style {
             background: Some(Background::Color(color)),
             text_color,
             border,
             ..Default::default()
         },
-        button::Status::Disabled => button::Style {
-            background: Some(Background::Color(mix_colors(Color::TRANSPARENT, color))),
+        (_, _) => button::Style {
+            background: Some(Background::Color(half_transparency(color))),
             text_color,
             border,
             ..Default::default()

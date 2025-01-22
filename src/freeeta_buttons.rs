@@ -36,19 +36,27 @@ pub fn bookmark<'a>(
     font: Font,
     inner_text: &str,
     color: Color,
+    is_actived: bool,
 ) -> Tooltip<'a, MainMenuMessage, Theme> {
+    let mut button = button(
+        Text::new(inner_text.to_string())
+            .font(font)
+            .align_y(Alignment::Center)
+            .align_x(Alignment::Center)
+            .line_height(LineHeight::Relative(1.0)),
+    )
+    .style(move |theme, status| freeeta_styles::bookmark_style(theme, status, color, is_actived))
+    .height(40)
+    .on_press(message);
+
+    // Lengthen and hignlight the button when activated
+    button = match is_actived {
+        true => button.width(80),
+        false => button.width(60),
+    };
+
     let bookmark = Tooltip::new(
-        button(
-            Text::new(inner_text.to_string())
-                .font(font)
-                .align_y(Alignment::Center)
-                .align_x(Alignment::Center)
-                .line_height(LineHeight::Relative(1.0)),
-        )
-        .style(move |theme, status| freeeta_styles::bookmark_style(theme, status, color))
-        .height(40)
-        .width(80)
-        .on_press(message),
+        button,
         Text::new("Press to active / deactive")
             .font(font)
             .size(Pixels { 0: 15f32 }),
