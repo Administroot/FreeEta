@@ -3,6 +3,7 @@ mod freeeta_picklists;
 mod freeeta_styles;
 mod freeeta_yml;
 mod main_menu;
+mod pages;
 
 use iced;
 

@@ -1,67 +1,45 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Pages {
-    title: &'static str,
-    view: fn() -> Element<'static, Message>,
+use iced::{alignment, widget::{container, text, Container}};
+
+use crate::main_menu::{FreeEta, MainMenuMessage};
+
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Pages {
+    #[default]
+    MainMenuPage,
+    InterfacePage,
+    ChartPage,
+    DeveloperPage,
+    ExportPage,
 }
 
-impl Pages {
-    const LIST: &'static [Self] = &[
-        Self {
-            title: "Centered",
-            view: centered,
-        },
-        Self {
-            title: "Column",
-            view: column_,
-        },
-        Self {
-            title: "Row",
-            view: row_,
-        },
-        Self {
-            title: "Space",
-            view: space,
-        },
-        Self {
-            title: "Application",
-            view: application,
-        },
-    ];
-
-    fn is_first(self) -> bool {
-        Self::LIST.first() == Some(&self)
+impl FreeEta {
+    pub fn main_menu_page(&self) -> Container<MainMenuMessage>{
+        container(
+            text("Hello, FreeEta!").size(80),
+        ).align_x(alignment::Horizontal::Center).align_y(alignment::Vertical::Center).into()
     }
 
-    fn is_last(self) -> bool {
-        Self::LIST.last() == Some(&self)
+    pub fn interface_page(&self) -> Container<MainMenuMessage>{
+        container(
+            text("Hello, interface page!").size(70),
+        ).align_x(alignment::Horizontal::Center).align_y(alignment::Vertical::Center).into()
     }
 
-    fn previous(self) -> Self {
-        let Some(index) = Self::LIST.iter().position(|&Pages| Pages == self) else {
-            return self;
-        };
-
-        Self::LIST
-            .get(index.saturating_sub(1))
-            .copied()
-            .unwrap_or(self)
+    pub fn chart_page(&self) -> Container<MainMenuMessage>{
+        container(
+            text("Hello, chart page!").size(65),
+        ).align_x(alignment::Horizontal::Center).align_y(alignment::Vertical::Center).into()
     }
 
-    fn next(self) -> Self {
-        let Some(index) = Self::LIST.iter().position(|&Pages| Pages == self) else {
-            return self;
-        };
-
-        Self::LIST.get(index + 1).copied().unwrap_or(self)
+    pub fn developer_page(&self) -> Container<MainMenuMessage>{
+        container(
+            text("Hello, developer page!").size(60),
+        ).align_x(alignment::Horizontal::Center).align_y(alignment::Vertical::Center).into()
     }
 
-    fn view(&self) -> Element<Message> {
-        (self.view)()
-    }
-}
-
-impl Default for Pages {
-    fn default() -> Self {
-        Self::LIST[0]
+    pub fn export_page(&self) -> Container<MainMenuMessage>{
+        container(
+            text("Hello, export page!").size(50),
+        ).align_x(alignment::Horizontal::Center).align_y(alignment::Vertical::Center).into()
     }
 }

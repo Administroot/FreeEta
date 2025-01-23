@@ -11,6 +11,7 @@ use iced::{
 };
 
 use crate::{freeeta_buttons, freeeta_picklists::functional_picklist, freeeta_styles};
+use crate::pages::Pages;
 
 pub struct FreeEta {
     // TODO: Actually, I don't need this member.
@@ -20,6 +21,7 @@ pub struct FreeEta {
     eta_bookmark_status: bool,
     developer_bookmark_status: bool,
     export_bookmark_status: bool,
+    page: Pages,
 }
 
 impl Default for FreeEta {
@@ -52,6 +54,7 @@ impl FreeEta {
                 eta_bookmark_status: false,
                 developer_bookmark_status: false,
                 export_bookmark_status: false,
+                page: Pages::MainMenuPage,
             },
             Task::none(),
         )
@@ -85,33 +88,45 @@ impl FreeEta {
             MainMenuMessage::ViewBookmarkMsg => {
                 self.view_bookmark_status = !self.view_bookmark_status;
                 if self.view_bookmark_status {
+                    // Close other bookmarks
                     self.eta_bookmark_status = false;
                     self.developer_bookmark_status = false;
                     self.export_bookmark_status = false;
+                    // Open corresponding page
+                    self.page = Pages::InterfacePage;
                 }
             }
             MainMenuMessage::EtaBookmarkMsg => {
                 self.eta_bookmark_status = !self.eta_bookmark_status;
                 if self.eta_bookmark_status {
+                    // Close other bookmarks
                     self.view_bookmark_status = false;
                     self.developer_bookmark_status = false;
                     self.export_bookmark_status = false;
+                    // Open corresponding page
+                    self.page = Pages::ChartPage;
                 }
             }
             MainMenuMessage::DeveloperBookmarkMsg => {
                 self.developer_bookmark_status = !self.developer_bookmark_status;
                 if self.developer_bookmark_status {
+                    // Close other bookmarks
                     self.view_bookmark_status = false;
                     self.eta_bookmark_status = false;
                     self.export_bookmark_status = false;
+                    // Open corresponding page
+                    self.page = Pages::DeveloperPage;
                 }
             }
             MainMenuMessage::ExportBookmarkMsg => {
                 self.export_bookmark_status = !self.export_bookmark_status;
                 if self.export_bookmark_status {
+                    // Close other bookmarks
                     self.view_bookmark_status = false;
                     self.eta_bookmark_status = false;
                     self.developer_bookmark_status = false;
+                    // Open corresponding page
+                    self.page = Pages::ExportPage;
                 }
             }
         }
@@ -219,6 +234,14 @@ impl FreeEta {
         .style(freeeta_styles::bottomline_text_unselected)
         .align_x(alignment::Horizontal::Center);
 
+        let screen = match self.page {
+            Pages::MainMenuPage => self.main_menu_page(),
+            Pages::InterfacePage => self.interface_page(),
+            Pages::ChartPage => self.chart_page(),
+            Pages::DeveloperPage => self.developer_page(),
+            Pages::ExportPage => self.export_page(),
+        };
+
         column!(
             // Functional row
             row![
@@ -234,14 +257,20 @@ impl FreeEta {
             vertical_space(),
             // Body
             container(
-                column![
-                    view_bookmark,
-                    eta_bookmark,
-                    developer_bookmark,
-                    export_bookmark,
-                ]
-                .spacing(10.)
-                .align_x(alignment::Horizontal::Left)
+                row![
+                    // Bookmarks
+                    column![
+                        view_bookmark,
+                        eta_bookmark,
+                        developer_bookmark,
+                        export_bookmark,
+                    ]
+                    .spacing(10.)
+                    .align_x(alignment::Horizontal::Left),
+
+                    // Canvas
+                    screen
+                ].spacing(10)
             )
             .align_x(alignment::Horizontal::Left),
             vertical_space(),

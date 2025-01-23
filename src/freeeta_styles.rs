@@ -1,7 +1,7 @@
 use iced::{
-    border::{rounded, Radius},
-    widget::{button, container, pick_list, text},
-    Background, Border, Color, Shadow, Theme, Vector,
+    border::Radius,
+    widget::{button, pick_list, text},
+    Background, Border, Color, Theme,
 };
 
 // TODO: Read Theme from const in the future.
@@ -27,20 +27,6 @@ pub fn functional_picklist_style(_theme: &Theme, _status: pick_list::Status) -> 
 pub fn bottomline_text_unselected(_theme: &Theme) -> text::Style {
     text::Style {
         color: Some(Color::from_rgb(0.35, 0.35, 0.34)),
-    }
-}
-
-#[allow(dead_code)]
-pub fn shadowed_container(_theme: &Theme) -> container::Style {
-    container::Style {
-        shadow: Shadow {
-            color: Color::BLACK,
-            offset: Vector { x: 0., y: 0. },
-            blur_radius: 8.,
-        },
-        background: Some(Background::Color(Color::BLACK)),
-        border: rounded(20.),
-        ..Default::default()
     }
 }
 
@@ -107,25 +93,5 @@ pub fn bookmark_style(
             border,
             ..Default::default()
         },
-    }
-}
-
-#[allow(dead_code)]
-// Container with right-side round border
-pub fn half_rounded_container(_theme: &Theme, color: Color) -> container::Style {
-    container::Style {
-        shadow: Shadow::default(),
-        background: Some(Background::Color(Color::TRANSPARENT)),
-        border: Border {
-            color,
-            width: 2.,
-            radius: Radius {
-                top_left: 0.,
-                top_right: 5.,
-                bottom_right: 5.,
-                bottom_left: 0.,
-            },
-        },
-        ..Default::default()
     }
 }
