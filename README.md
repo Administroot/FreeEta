@@ -3,9 +3,9 @@
 # ![LOGO](static/svg/logo.svg) FreeEta
 
 [![Crates.io](https://img.shields.io/crates/v/FreeEta.svg)](https://crates.io/crates/FreeEta)
-[![License](https://img.shields.io/crates/l/FreeEta.svg)](https://github.com/Administroot/FreeEta/blob/main/LICENSE)
+![GitHub License](https://img.shields.io/github/license/Administroot/FreeEta)
 [![Downloads](https://img.shields.io/crates/d/FreeEta.svg)](https://github.com/Administroot/FreeEta/releases/latest)
-[![Test Status](https://img.shields.io/github/actions/workflow/status/administroot/FreeEta/test.yml?branch=master&event=push&label=test)](https://github.com/administroot/FreeEta/actions)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Administroot/FreeEta/rust.yml)
 [![Made with iced](https://iced.rs/badge.svg)](https://github.com/iced-rs/iced)
 
 A fast, elegant & free ETA analysis utility powered by 🦀 Rust, 🧊 iced.
