@@ -84,15 +84,35 @@ impl FreeEta {
             }
             MainMenuMessage::ViewBookmarkMsg => {
                 self.view_bookmark_status = !self.view_bookmark_status;
+                if self.view_bookmark_status {
+                    self.eta_bookmark_status = false;
+                    self.developer_bookmark_status = false;
+                    self.export_bookmark_status = false;
+                }
             }
             MainMenuMessage::EtaBookmarkMsg => {
                 self.eta_bookmark_status = !self.eta_bookmark_status;
+                if self.eta_bookmark_status {
+                    self.view_bookmark_status = false;
+                    self.developer_bookmark_status = false;
+                    self.export_bookmark_status = false;
+                }
             }
             MainMenuMessage::DeveloperBookmarkMsg => {
                 self.developer_bookmark_status = !self.developer_bookmark_status;
+                if self.developer_bookmark_status {
+                    self.view_bookmark_status = false;
+                    self.eta_bookmark_status = false;
+                    self.export_bookmark_status = false;
+                }
             }
             MainMenuMessage::ExportBookmarkMsg => {
                 self.export_bookmark_status = !self.export_bookmark_status;
+                if self.export_bookmark_status {
+                    self.view_bookmark_status = false;
+                    self.eta_bookmark_status = false;
+                    self.developer_bookmark_status = false;
+                }
             }
         }
         Task::none()
