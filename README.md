@@ -1,6 +1,6 @@
 <div align="center">
 
-# FreeEta
+# ![LOGO](static/svg/logo.svg) FreeEta
 
 [![Crates.io](https://img.shields.io/crates/v/FreeEta.svg)](https://crates.io/crates/FreeEta)
 [![License](https://img.shields.io/crates/l/FreeEta.svg)](https://github.com/Administroot/FreeEta/blob/main/LICENSE)
@@ -14,7 +14,9 @@ A fast, elegant & free ETA analysis utility powered by 🦀 Rust, 🧊 iced.
 
 </div>
 
-> ❗❗❗<span style="color:rgb(255, 0, 0)">Main functions are not yet!</span>
+> [!danger]+
+> Freeeta is on flight🛫
+>
 
 ## Installation
 
