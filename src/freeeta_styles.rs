@@ -1,7 +1,8 @@
 use iced::{
-    border::Radius,
+    border::{radius, Radius},
+    color,
     widget::{button, pick_list, text},
-    Background, Border, Color, Theme,
+    Background, Border, Color, Pixels, Theme,
 };
 
 // TODO: Read Theme from const in the future.
@@ -94,4 +95,63 @@ pub fn bookmark_style(
             ..Default::default()
         },
     }
+}
+
+pub fn eta_event_header_style(
+    _theme: &Theme,
+    status: button::Status,
+    color: Color,
+) -> button::Style {
+    let text_color = Color::BLACK;
+    let border = Border {
+        color,
+        width: 1.,
+        radius: radius(Pixels { 0: 2. }),
+    };
+
+    match status {
+        button::Status::Active => button::Style {
+            background: Some(Background::Color(color)),
+            text_color,
+            border,
+            ..Default::default()
+        },
+        button::Status::Hovered => button::Style {
+            background: Some(Background::Color(mix_colors(Color::WHITE, color))),
+            text_color,
+            border,
+            ..Default::default()
+        },
+        button::Status::Pressed => button::Style {
+            background: Some(Background::Color(color)),
+            text_color,
+            border,
+            ..Default::default()
+        },
+        _ => button::Style {
+            background: Some(Background::Color(half_transparency(color))),
+            text_color,
+            border,
+            ..Default::default()
+        },
+    }
+}
+
+/// Pick a color from color palette
+/// num: color selected, range [0, +∞)
+pub fn get_a_color(num: usize) -> Color {
+    let palette: Vec<Color> = vec![
+        color!(0x2ecc71),
+        color!(0x3498db),
+        color!(0x9b59b6),
+        color!(0xf1c40f),
+        color!(0xe67e22),
+        color!(0xe74c3c),
+        color!(0xfd79a8),
+        color!(0xba79b1),
+        color!(0x7efff5),
+    ];
+
+    let color_number = num % palette.len();
+    return *palette.get(color_number).unwrap();
 }

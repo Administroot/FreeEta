@@ -10,8 +10,9 @@ use iced::{
     Color, ContentFit, Element, Event, Font, Point, Subscription, Task,
 };
 
-use crate::{freeeta_buttons, freeeta_picklists::functional_picklist, freeeta_styles};
+use crate::freeeta_serial::{self, EtaEntity};
 use crate::pages::Pages;
+use crate::{freeeta_buttons, freeeta_picklists::functional_picklist, freeeta_styles};
 
 pub struct FreeEta {
     // TODO: Actually, I don't need this member.
@@ -22,6 +23,7 @@ pub struct FreeEta {
     developer_bookmark_status: bool,
     export_bookmark_status: bool,
     page: Pages,
+    pub eta: EtaEntity,
 }
 
 impl Default for FreeEta {
@@ -42,6 +44,7 @@ pub enum MainMenuMessage {
     EtaBookmarkMsg,
     DeveloperBookmarkMsg,
     ExportBookmarkMsg,
+    DoNothing,
 }
 
 impl FreeEta {
@@ -55,6 +58,7 @@ impl FreeEta {
                 developer_bookmark_status: false,
                 export_bookmark_status: false,
                 page: Pages::MainMenuPage,
+                eta: EtaEntity::new(),
             },
             Task::none(),
         )
@@ -129,6 +133,7 @@ impl FreeEta {
                     self.page = Pages::ExportPage;
                 }
             }
+            MainMenuMessage::DoNothing => {}
         }
         Task::none()
     }
@@ -255,24 +260,27 @@ impl FreeEta {
             ],
             horizontal_rule(0),
             vertical_space(),
-            // Body
-            container(
-                row![
-                    // Bookmarks
-                    column![
-                        view_bookmark,
-                        eta_bookmark,
-                        developer_bookmark,
-                        export_bookmark,
+            row![
+                // Body
+                container(
+                    row![
+                        // Bookmarks
+                        column![
+                            view_bookmark,
+                            eta_bookmark,
+                            developer_bookmark,
+                            export_bookmark,
+                        ]
+                        .spacing(10.)
+                        .align_x(alignment::Horizontal::Left),
                     ]
-                    .spacing(10.)
-                    .align_x(alignment::Horizontal::Left),
-
-                    // Canvas
-                    screen
-                ].spacing(10)
-            )
-            .align_x(alignment::Horizontal::Left),
+                    .spacing(10)
+                )
+                .align_x(alignment::Horizontal::Left),
+                horizontal_space(),
+                screen,
+                horizontal_space(),
+            ],
             vertical_space(),
             // Bottom row
             horizontal_rule(0),
@@ -298,5 +306,11 @@ impl FreeEta {
                 _ => None
             }
         })
+    }
+
+    #[allow(dead_code)]
+    /// Get user's customized eta
+    fn get_eta(&mut self, path: &str) {
+        self.eta = freeeta_serial::read_eta_json(path).expect("JSON syntax error");
     }
 }

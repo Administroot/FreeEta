@@ -2,7 +2,7 @@ use crate::freeeta_styles;
 use crate::main_menu::MainMenuMessage;
 use iced::widget::text::LineHeight;
 use iced::widget::tooltip::Position;
-use iced::widget::{button, Text, Tooltip};
+use iced::widget::{button, Button, Text, Tooltip};
 use iced::{Alignment, Color, Font, Pixels, Theme};
 
 #[allow(dead_code)]
@@ -35,7 +35,7 @@ pub fn bookmark<'a>(
     message: MainMenuMessage,
     font: Font,
     inner_text: &str,
-    color: Color,
+    background_color: Color,
     is_actived: bool,
 ) -> Tooltip<'a, MainMenuMessage, Theme> {
     let mut button = button(
@@ -45,7 +45,9 @@ pub fn bookmark<'a>(
             .align_x(Alignment::Center)
             .line_height(LineHeight::Relative(1.0)),
     )
-    .style(move |theme, status| freeeta_styles::bookmark_style(theme, status, color, is_actived))
+    .style(move |theme, status| {
+        freeeta_styles::bookmark_style(theme, status, background_color, is_actived)
+    })
     .height(40)
     .on_press(message);
 
@@ -64,4 +66,26 @@ pub fn bookmark<'a>(
     )
     .gap(5);
     return bookmark;
+}
+
+pub fn eta_event_header<'a>(
+    message: MainMenuMessage,
+    font: Font,
+    inner_text: &str,
+    background_color: Color,
+) -> Button<'a, MainMenuMessage, Theme> {
+    button(
+        Text::new(inner_text.to_string())
+            .size(20.)
+            .font(font)
+            .align_y(Alignment::Center)
+            .align_x(Alignment::Center)
+            .line_height(LineHeight::Relative(1.0)),
+    )
+    .style(move |theme, status| {
+        freeeta_styles::eta_event_header_style(theme, status, background_color)
+    })
+    .height(30)
+    .padding(5)
+    .on_press(message)
 }

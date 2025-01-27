@@ -4,7 +4,6 @@
 
 [![Crates.io](https://img.shields.io/crates/v/FreeEta.svg)](https://crates.io/crates/FreeEta)
 ![GitHub License](https://img.shields.io/github/license/Administroot/FreeEta)
-[![Downloads](https://img.shields.io/crates/d/FreeEta.svg)](https://github.com/Administroot/FreeEta/releases/latest)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Administroot/FreeEta/rust.yml)
 [![Made with iced](https://iced.rs/badge.svg)](https://github.com/iced-rs/iced)
 
@@ -24,7 +23,7 @@ A fast, elegant & free ETA analysis utility powered by 🦀 Rust, 🧊 iced.
   <img src="static/svg/get_it_on_github.svg" alt="Get it on Github" width="200"/>
 </a>
 
-Support windows / linux / MacOS! 
+Support windows / linux / MacOS!
 
 Or use `cargo` to try it out:
 

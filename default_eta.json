@@ -1,0 +1,41 @@
+{
+    "name": "Default-Eta",
+    "api_version": "0.1.0",
+    "company": "default",
+    "staff": "Administroot",
+    "date": "2025-01-24",
+    "phone": "021-13465294604",
+    "mail": "boli_lemon@foxmail.com",
+    "nodes": [
+        {
+            "name": "Init",
+            "rate": 1.0,
+            "prev": ["None"]
+        },
+        {
+            "name": "Pump",
+            "rate": 0.5,
+            "prev": ["Init"]
+        },
+        {
+            "name": "Valve 1",
+            "rate": 0.9,
+            "prev": ["Pump"]
+        },
+        {
+            "name": "Valve 2",
+            "rate": 0.9,
+            "prev": ["Valve 1"]
+        },
+        {
+            "name": "Valve 3",
+            "rate": 0.9,
+            "prev": ["Valve 1"]
+        },
+        {
+            "name": "Valve 4",
+            "rate": 0.9,
+            "prev": ["Valve 2", "Valve 3"]
+        }
+    ]
+}
