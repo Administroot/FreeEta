@@ -1,7 +1,7 @@
 use iced::{
     border::{radius, Radius},
     color,
-    widget::{button, pick_list, text},
+    widget::{button, pick_list, rule, text},
     Background, Border, Color, Pixels, Theme,
 };
 
@@ -62,10 +62,10 @@ pub fn bookmark_style(
         color,
         width: 2.,
         radius: Radius {
-            top_left: 0.,
-            top_right: 5.,
-            bottom_right: 5.,
-            bottom_left: 0.,
+            top_left: 5.,
+            top_right: 0.,
+            bottom_right: 0.,
+            bottom_left: 5.,
         },
     };
 
@@ -154,4 +154,22 @@ pub fn get_a_color(num: usize) -> Color {
 
     let color_number = num % palette.len();
     return *palette.get(color_number).unwrap();
+}
+
+pub fn eta_branch_style(_theme: &Theme) -> rule::Style {
+    rule::Style {
+        width: 2,
+        fill_mode: rule::FillMode::Full,
+        color: Color::BLACK,
+        radius: radius(Pixels::ZERO),
+    }
+}
+
+pub fn event_seperate_line_style(color: Color, _theme: &Theme) -> rule::Style {
+    rule::Style {
+        width: 1,
+        fill_mode: rule::FillMode::Padded(2),
+        color,
+        radius: radius(Pixels::ZERO),
+    }
 }

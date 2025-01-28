@@ -1,5 +1,6 @@
 mod freeeta_buttons;
 mod freeeta_picklists;
+mod freeeta_rules;
 mod freeeta_serial;
 mod freeeta_styles;
 mod main_menu;

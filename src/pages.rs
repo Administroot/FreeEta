@@ -1,10 +1,11 @@
 use iced::{
     alignment,
-    widget::{container, row, text, Container},
-    Font,
+    widget::{column, container, row, text, vertical_space, Container},
+    Font, Length,
 };
 
 use crate::freeeta_buttons;
+use crate::freeeta_rules;
 use crate::{
     freeeta_styles,
     main_menu::{FreeEta, MainMenuMessage},
@@ -64,19 +65,31 @@ impl FreeEta {
 
     // Default
     fn default_chart_page(&self) -> Container<MainMenuMessage> {
+        let color_0 = freeeta_styles::get_a_color(0);
         container(row![
-            freeeta_buttons::eta_event_header(
-                MainMenuMessage::DoNothing,
-                Font::DEFAULT,
-                "Initiating Event",
-                freeeta_styles::get_a_color(0)
-            ),
-            freeeta_buttons::eta_event_header(
-                MainMenuMessage::DoNothing,
-                Font::DEFAULT,
-                "Event 1",
-                freeeta_styles::get_a_color(1)
-            ),
+            column![
+                freeeta_buttons::eta_event_header(
+                    MainMenuMessage::DoNothing,
+                    Font::DEFAULT,
+                    "Initiating Event",
+                    color_0,
+                ),
+                vertical_space(),
+                freeeta_rules::eta_branch("Initiating Event(IE)"),
+                vertical_space(),
+            ]
+            .width(Length::Shrink),
+            freeeta_rules::event_seperate_line(color_0),
+            // freeeta_rules::event_seperate_line(Color::BLACK),
+            column![
+                freeeta_buttons::eta_event_header(
+                    MainMenuMessage::DoNothing,
+                    Font::DEFAULT,
+                    "Event 1",
+                    freeeta_styles::get_a_color(1)
+                ),
+                vertical_space(),
+            ],
             freeeta_buttons::eta_event_header(
                 MainMenuMessage::DoNothing,
                 Font::DEFAULT,

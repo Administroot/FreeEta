@@ -264,6 +264,8 @@ impl FreeEta {
                 // Body
                 container(
                     row![
+                        screen,
+                        horizontal_space(),
                         // Bookmarks
                         column![
                             view_bookmark,
@@ -272,14 +274,11 @@ impl FreeEta {
                             export_bookmark,
                         ]
                         .spacing(10.)
-                        .align_x(alignment::Horizontal::Left),
+                        .align_x(alignment::Horizontal::Right),
                     ]
                     .spacing(10)
                 )
                 .align_x(alignment::Horizontal::Left),
-                horizontal_space(),
-                screen,
-                horizontal_space(),
             ],
             vertical_space(),
             // Bottom row

@@ -62,7 +62,7 @@ pub fn bookmark<'a>(
         Text::new("Press to active / deactive")
             .font(font)
             .size(Pixels { 0: 15f32 }),
-        Position::Right,
+        Position::Left,
     )
     .gap(5);
     return bookmark;
