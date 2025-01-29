@@ -3,7 +3,7 @@ use crate::main_menu::MainMenuMessage;
 use iced::widget::text::LineHeight;
 use iced::widget::tooltip::Position;
 use iced::widget::{button, Button, Text, Tooltip};
-use iced::{Alignment, Color, Font, Pixels, Theme};
+use iced::{Alignment, Color, Font, Length, Pixels, Theme};
 
 #[allow(dead_code)]
 /// Button '×'
@@ -85,6 +85,7 @@ pub fn eta_event_header<'a>(
     .style(move |theme, status| {
         freeeta_styles::eta_event_header_style(theme, status, background_color)
     })
+    .width(Length::Shrink)
     .height(30)
     .padding(5)
     .on_press(message)

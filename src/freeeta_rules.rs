@@ -1,14 +1,18 @@
-use iced::widget::{column, horizontal_rule, text, vertical_rule, Column, Rule};
-use iced::{Color, Theme};
+use iced::widget::{
+    column, horizontal_rule, horizontal_space, row, text, vertical_rule, Column, Rule,
+};
+use iced::{Color, Length, Theme};
 
 use crate::freeeta_styles;
 use crate::main_menu::MainMenuMessage;
 
 pub fn eta_branch(content: &str) -> Column<MainMenuMessage, Theme> {
     column![
-        text(content),
+        row![horizontal_space(), text(content), horizontal_space(),],
         horizontal_rule(0.).style(freeeta_styles::eta_branch_style)
     ]
+    .height(Length::Fixed(30.))
+    .width(Length::Fill)
     .into()
 }
 
