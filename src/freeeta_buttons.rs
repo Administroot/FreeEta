@@ -2,7 +2,7 @@ use crate::freeeta_styles;
 use crate::main_menu::MainMenuMessage;
 use iced::widget::text::LineHeight;
 use iced::widget::tooltip::Position;
-use iced::widget::{button, Button, Text, Tooltip};
+use iced::widget::{button, horizontal_space, row, Button, Text, Tooltip};
 use iced::{Alignment, Color, Font, Length, Pixels, Theme};
 
 #[allow(dead_code)]
@@ -74,14 +74,14 @@ pub fn eta_event_header<'a>(
     inner_text: &str,
     background_color: Color,
 ) -> Button<'a, MainMenuMessage, Theme> {
-    button(
+    button(row![
+        horizontal_space(),
         Text::new(inner_text.to_string())
             .size(20.)
             .font(font)
-            .align_y(Alignment::Center)
-            .align_x(Alignment::Center)
             .line_height(LineHeight::Relative(1.0)),
-    )
+        horizontal_space(),
+    ])
     .style(move |theme, status| {
         freeeta_styles::eta_event_header_style(theme, status, background_color)
     })
