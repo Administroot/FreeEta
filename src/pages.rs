@@ -1,7 +1,7 @@
 use iced::{
     alignment,
-    widget::{column, container, row, text, vertical_space},
-    Element, Font, Length,
+    widget::{column, container, row, text, vertical_space, Row},
+    Color, Element, Font, Length,
 };
 
 use crate::freeeta_buttons;
@@ -45,7 +45,7 @@ impl FreeEta {
                 .into()
         } else {
             // Display default ETA
-            self.default_chart_page()
+            default_chart_page()
         }
     }
 
@@ -62,102 +62,60 @@ impl FreeEta {
             .align_y(alignment::Vertical::Center)
             .into()
     }
+}
 
-    // Default
-    fn default_chart_page(&self) -> Element<MainMenuMessage> {
-        let color_0 = freeeta_styles::get_a_color(0);
-        let color_1 = freeeta_styles::get_a_color(1);
-        let color_2 = freeeta_styles::get_a_color(2);
-        let color_3 = freeeta_styles::get_a_color(3);
-        let color_4 = freeeta_styles::get_a_color(4);
-        let color_5 = freeeta_styles::get_a_color(5);
+fn default_chart_page<'a>() -> Element<'a, MainMenuMessage> {
+    let page = default_init_event();
+    page.into()
+}
 
-        row![
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Initiating Event",
-                    color_0,
-                )
+fn default_init_event<'a>() -> Row<'a, MainMenuMessage> {
+    let color_0 = freeeta_styles::get_a_color(0);
+    let color_1 = freeeta_styles::get_a_color(1);
+
+    let init_event = row![
+        column![
+            freeeta_buttons::eta_event_header(
+                MainMenuMessage::DoNothing,
+                Font::DEFAULT,
+                "Initiating Event",
+                color_0,
+            )
+            .width(Length::FillPortion(1)),
+            vertical_space(),
+            freeeta_rules::eta_horizontal_branch("Initiating Event(IE)")
                 .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Initiating Event(IE)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
-            freeeta_rules::event_seperate_line(color_0),
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Event 1",
-                    color_1,
-                )
-                .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Success(Valve 1)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
-            freeeta_rules::event_seperate_line(color_1),
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Event 2",
-                    color_2,
-                )
-                .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Success(Valve 1)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
-            freeeta_rules::event_seperate_line(color_2),
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Event 3",
-                    color_3,
-                )
-                .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Success(Valve 1)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
-            freeeta_rules::event_seperate_line(color_3),
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Event 4",
-                    color_4,
-                )
-                .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Success(Valve 1)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
-            freeeta_rules::event_seperate_line(color_4),
-            column![
-                freeeta_buttons::eta_event_header(
-                    MainMenuMessage::DoNothing,
-                    Font::DEFAULT,
-                    "Outcome",
-                    color_5,
-                )
-                .width(Length::FillPortion(1)),
-                vertical_space(),
-                freeeta_rules::eta_branch("Success(Valve 1)").width(Length::FillPortion(1)),
-                vertical_space(),
-            ]
-            .width(Length::Fill),
+            vertical_space(),
         ]
-        .height(Length::Fill)
-        .into()
-    }
+        .width(Length::Fill),
+        freeeta_rules::event_seperate_line(color_0),
+    ]
+    .height(Length::Fill);
+
+    let event_1 = default_event_1(init_event, color_1);
+    event_1
+}
+
+fn default_event_1<'a>(
+    prev_event: Row<'a, MainMenuMessage>,
+    color: Color,
+) -> Row<'a, MainMenuMessage> {
+    row![
+        prev_event.width(Length::FillPortion(1)),
+        column![
+            freeeta_buttons::eta_event_header(
+                MainMenuMessage::DoNothing,
+                Font::default(),
+                "Event 1",
+                color
+            ),
+            column![
+                column![vertical_space(), freeeta_rules::eta_horizontal_branch("Success(Valve 1)")].height(Length::FillPortion(1)).padding(0),
+                freeeta_rules::eta_vertical_branch(),
+                column![freeeta_rules::eta_horizontal_branch("Failure(Valve 1)")].height(Length::FillPortion(1)).padding(0),
+            ],
+        ]
+        .width(Length::FillPortion(1)),
+        freeeta_rules::event_seperate_line(color),
+    ]
 }

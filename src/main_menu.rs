@@ -260,26 +260,25 @@ impl FreeEta {
             ],
             horizontal_rule(0),
             vertical_space(),
-            row![
-                // Body
-                container(
-                    row![
-                        screen,
-                        horizontal_space(),
-                        // Bookmarks
-                        column![
-                            view_bookmark,
-                            eta_bookmark,
-                            developer_bookmark,
-                            export_bookmark,
-                        ]
-                        .spacing(10.)
-                        .align_x(alignment::Horizontal::Right),
+            // Body
+            container(
+                row![
+                    screen,
+                    horizontal_space(),
+                    // Bookmarks
+                    column![
+                        view_bookmark,
+                        eta_bookmark,
+                        developer_bookmark,
+                        export_bookmark,
                     ]
+                    // TODO: Future, I need to space automatically
                     .spacing(10)
-                )
-                .align_x(alignment::Horizontal::Left),
-            ],
+                    .align_x(alignment::Horizontal::Right),
+                ]
+                .spacing(10)
+            )
+            .align_x(alignment::Horizontal::Left),
             vertical_space(),
             // Bottom row
             horizontal_rule(0),

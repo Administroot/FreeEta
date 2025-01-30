@@ -156,7 +156,7 @@ pub fn get_a_color(num: usize) -> Color {
     return *palette.get(color_number).unwrap();
 }
 
-pub fn eta_branch_style(_theme: &Theme) -> rule::Style {
+pub fn eta_horizontal_rule_style(_theme: &Theme) -> rule::Style {
     rule::Style {
         width: 2,
         fill_mode: rule::FillMode::Full,
@@ -170,6 +170,15 @@ pub fn event_seperate_line_style(color: Color, _theme: &Theme) -> rule::Style {
         width: 1,
         fill_mode: rule::FillMode::Padded(2),
         color,
+        radius: radius(Pixels::ZERO),
+    }
+}
+
+pub fn eta_vertical_branch_style(_theme: &Theme) -> rule::Style {
+    rule::Style {
+        width: 2,
+        fill_mode: rule::FillMode::Full,
+        color: Color::BLACK,
         radius: radius(Pixels::ZERO),
     }
 }
