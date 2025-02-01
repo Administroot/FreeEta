@@ -82,10 +82,12 @@ fn default_init_event<'a>() -> Row<'a, MainMenuMessage> {
                 color_0,
             )
             .width(Length::FillPortion(1)),
-            vertical_space(),
-            freeeta_rules::eta_horizontal_branch("Initiating Event(IE)")
-                .width(Length::FillPortion(1)),
-            vertical_space(),
+            column![
+                vertical_space().height(Length::FillPortion(2)),
+                freeeta_rules::eta_horizontal_branch("Initiating Event(IE)", false),
+                vertical_space().height(Length::FillPortion(2)),
+            ]
+            .width(Length::FillPortion(1))
         ]
         .width(Length::Fill),
         freeeta_rules::event_seperate_line(color_0),
@@ -110,9 +112,11 @@ fn default_event_1<'a>(
                 color
             ),
             column![
-                column![vertical_space(), freeeta_rules::eta_horizontal_branch("Success(Valve 1)")].height(Length::FillPortion(1)).padding(0),
-                freeeta_rules::eta_vertical_branch(),
-                column![freeeta_rules::eta_horizontal_branch("Failure(Valve 1)")].height(Length::FillPortion(1)).padding(0),
+                // IF BRANCH IS ON THE TOP, IGNORE VERTICAL_SPACE
+                // vertical_space().height(Length::FillPortion(1)),
+                freeeta_rules::eta_horizontal_branch("Success(Valve 1)", false),
+                freeeta_rules::eta_vertical_branch(2),
+                freeeta_rules::eta_horizontal_branch("Failure(Valve 1)", true),
             ],
         ]
         .width(Length::FillPortion(1)),

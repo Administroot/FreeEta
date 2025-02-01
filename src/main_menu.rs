@@ -1,4 +1,5 @@
-use iced::widget::{svg, text};
+use iced::widget::{svg, text, vertical_rule};
+use iced::Length;
 use iced::{
     alignment,
     event::{self, Status},
@@ -230,14 +231,19 @@ impl FreeEta {
         .padding(0u16)
         .style(container::rounded_box);
 
-        let mouse_position =
-            text(format!("{:?}", self.mouse_point)).color(Color::from_rgb(0.96, 0.31, 0.64));
-        let admonition = text(
-            "|  Copyright©Shanghai Justlinking Safety Technology co.,ltd.    \
-        Administroot<boli_lemon@foxmail.com>  ",
+        let mouse_position = container(
+            text(format!("{:?}", self.mouse_point)).color(Color::from_rgb(0.96, 0.31, 0.64)),
         )
-        .style(freeeta_styles::bottomline_text_unselected)
-        .align_x(alignment::Horizontal::Center);
+        .padding(3);
+        let admonition = container(
+            text(
+                "  Copyright©Shanghai Justlinking Safety Technology co.,ltd.    \
+        Administroot<boli_lemon@foxmail.com>  ",
+            )
+            .style(freeeta_styles::bottomline_text_unselected)
+            .align_x(alignment::Horizontal::Center),
+        )
+        .padding(3);
 
         let screen = match self.page {
             Pages::MainMenuPage => self.main_menu_page(),
@@ -282,7 +288,9 @@ impl FreeEta {
             vertical_space(),
             // Bottom row
             horizontal_rule(0),
-            row![mouse_position, admonition].align_y(alignment::Vertical::Bottom)
+            row![mouse_position, vertical_rule(2.), admonition]
+                .align_y(alignment::Vertical::Bottom)
+                .height(Length::Shrink)
         )
         .into()
     }
