@@ -265,7 +265,7 @@ impl FreeEta {
                 logo,
             ],
             horizontal_rule(0),
-            vertical_space(),
+            vertical_space().height(Length::Shrink),
             // Body
             container(
                 row![
@@ -273,10 +273,12 @@ impl FreeEta {
                     horizontal_space(),
                     // Bookmarks
                     column![
+                        vertical_space(),
                         view_bookmark,
                         eta_bookmark,
                         developer_bookmark,
                         export_bookmark,
+                        vertical_space(),
                     ]
                     // TODO: Future, I need to space automatically
                     .spacing(10)
@@ -285,7 +287,7 @@ impl FreeEta {
                 .spacing(10)
             )
             .align_x(alignment::Horizontal::Left),
-            vertical_space(),
+            vertical_space().height(Length::Shrink),
             // Bottom row
             horizontal_rule(0),
             row![mouse_position, vertical_rule(2.), admonition]

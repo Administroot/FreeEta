@@ -8,10 +8,10 @@ use crate::freeeta_styles;
 use crate::main_menu::MainMenuMessage;
 
 /// Horizontal branche of ETA tree
-/// content: the content of the branch
-/// is_frontal: whether it is the front one relative to the parent branch
+/// - `content`: the content of the branch
+/// - `is_frontal`: whether it is the front one relative to the parent branch
 pub fn eta_horizontal_branch(content: &str, is_frontal: bool) -> Column<MainMenuMessage, Theme> {
-    let vertical_compensatory_line = if is_frontal {
+    let vertical_compensatory_line = if !is_frontal {
         eta_vertical_branch(1)
     } else {
         container("").height(Length::Fill)
