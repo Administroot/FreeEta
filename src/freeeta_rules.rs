@@ -1,6 +1,6 @@
 use iced::widget::{
-    column, container, horizontal_rule, horizontal_space, row, text, vertical_rule, Column,
-    Container, Rule,
+    column, container, horizontal_rule, horizontal_space, row, text, vertical_rule, vertical_space,
+    Column, Container, Rule,
 };
 use iced::{alignment, Color, Length, Theme};
 
@@ -43,4 +43,22 @@ pub fn eta_vertical_branch<'a>(height: u16) -> Container<'a, MainMenuMessage, Th
 
 pub fn event_seperate_line<'a>(color: Color) -> Rule<'a, Theme> {
     vertical_rule(0.).style(move |theme| freeeta_styles::event_seperate_line_style(color, theme))
+}
+
+pub fn eta_output_branch(content: &str) -> Column<MainMenuMessage, Theme> {
+    column![
+        row![
+            vertical_space().height(Length::FillPortion(1)),
+            text(content)
+                .size(20.)
+                .width(Length::Shrink)
+                .height(Length::Shrink),
+            horizontal_space()
+        ]
+        .align_y(alignment::Vertical::Bottom),
+        horizontal_rule(2.).style(freeeta_styles::invisiable_rule_style),
+    ]
+    .height(Length::FillPortion(1))
+    .width(Length::Fill)
+    .into()
 }

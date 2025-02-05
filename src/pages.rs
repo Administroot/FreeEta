@@ -5,7 +5,9 @@ use iced::{
 };
 
 use crate::freeeta_buttons::eta_event_header;
-use crate::freeeta_rules::{eta_horizontal_branch, eta_vertical_branch, event_seperate_line};
+use crate::freeeta_rules::{
+    eta_horizontal_branch, eta_output_branch, eta_vertical_branch, event_seperate_line,
+};
 use crate::{
     freeeta_styles,
     main_menu::{FreeEta, MainMenuMessage},
@@ -75,6 +77,7 @@ fn default_init_event<'a>() -> Row<'a, MainMenuMessage> {
     let color_2 = freeeta_styles::get_a_color(2);
     let color_3 = freeeta_styles::get_a_color(3);
     let color_4 = freeeta_styles::get_a_color(4);
+    let color_5 = freeeta_styles::get_a_color(5);
 
     let init_event = row![
         column![
@@ -98,8 +101,9 @@ fn default_init_event<'a>() -> Row<'a, MainMenuMessage> {
     let event_1 = default_event_1(init_event, color_1);
     let event_2 = default_event_2(event_1, color_2);
     let event_3 = default_event_3(event_2, color_3);
-    let event_4 = default_event_4( event_3, color_4);
-    event_4
+    let event_4 = default_event_4(event_3, color_4);
+    let event_5 = default_outcome(event_4, color_5);
+    event_5
 }
 
 fn default_event_1<'a>(
@@ -193,7 +197,7 @@ fn default_event_4<'a>(
         prev_event.width(Length::FillPortion(4)),
         column![
             eta_event_header(
-                MainMenuMessage::DoNothing, 
+                MainMenuMessage::DoNothing,
                 Font::default(),
                 "Event 4",
                 color
@@ -202,24 +206,48 @@ fn default_event_4<'a>(
             eta_vertical_branch(1),
             eta_horizontal_branch("Failure(Valve 4)", false),
             vertical_space().height(Length::FillPortion(1)),
-
             eta_horizontal_branch("Success(Valve 4)", true),
             eta_vertical_branch(1),
             eta_horizontal_branch("Failure(Valve 4)", false),
             vertical_space().height(Length::FillPortion(1)),
-
             eta_horizontal_branch("Success(Valve 4)", true),
             eta_vertical_branch(1),
             eta_horizontal_branch("Failure(Valve 4)", false),
-            vertical_space().height(Length::FillPortion(1)),
-
-            vertical_space().height(Length::FillPortion(1)),
+            vertical_space().height(Length::FillPortion(2)),
             eta_horizontal_branch("Failure(Valve 3)", true),
-
             vertical_space().height(Length::FillPortion(1)),
             eta_horizontal_branch("Failure(Valve 1)", true),
         ]
         .width(Length::FillPortion(1)),
-        event_seperate_line(color),
+    ]
+}
+
+fn default_outcome<'a>(
+    prev_event: Row<'a, MainMenuMessage>,
+    color: Color,
+) -> Row<'a, MainMenuMessage> {
+    row![
+        prev_event
+            .width(Length::FillPortion(4))
+            .height(Length::FillPortion(1)),
+        column![
+            eta_event_header(MainMenuMessage::DoNothing, Font::default(), "Output", color),
+            eta_output_branch("Success Outcome A"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Failure Outcome B"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Success Outcome C"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Failure Outcome D"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Success Outcome E"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Failure Outcome F"),
+            vertical_space().height(Length::FillPortion(2)),
+            eta_output_branch("Failure Outcome G"),
+            vertical_space().height(Length::FillPortion(1)),
+            eta_output_branch("Failure Outcome H")
+        ]
+        .width(Length::FillPortion(1)),
     ]
 }

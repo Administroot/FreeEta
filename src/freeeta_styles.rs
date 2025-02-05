@@ -110,7 +110,7 @@ pub fn eta_event_header_style(
     };
 
     match status {
-        button::Status::Active => button::Style {
+        button::Status::Active | button::Status::Pressed => button::Style {
             background: Some(Background::Color(color)),
             text_color,
             border,
@@ -118,12 +118,6 @@ pub fn eta_event_header_style(
         },
         button::Status::Hovered => button::Style {
             background: Some(Background::Color(mix_colors(Color::WHITE, color))),
-            text_color,
-            border,
-            ..Default::default()
-        },
-        button::Status::Pressed => button::Style {
-            background: Some(Background::Color(color)),
             text_color,
             border,
             ..Default::default()
@@ -161,6 +155,15 @@ pub fn eta_horizontal_rule_style(_theme: &Theme) -> rule::Style {
         width: 2,
         fill_mode: rule::FillMode::Full,
         color: Color::BLACK,
+        radius: radius(Pixels::ZERO),
+    }
+}
+
+pub fn invisiable_rule_style(_theme: &Theme) -> rule::Style {
+    rule::Style {
+        width: 2,
+        fill_mode: rule::FillMode::Full,
+        color: Color::TRANSPARENT,
         radius: radius(Pixels::ZERO),
     }
 }

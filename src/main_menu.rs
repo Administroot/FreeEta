@@ -280,12 +280,12 @@ impl FreeEta {
                         export_bookmark,
                         vertical_space(),
                     ]
-                    // TODO: Future, I need to space automatically
                     .spacing(10)
                     .align_x(alignment::Horizontal::Right),
                 ]
                 .spacing(10)
             )
+            .width(Length::Shrink)
             .align_x(alignment::Horizontal::Left),
             vertical_space().height(Length::Shrink),
             // Bottom row
