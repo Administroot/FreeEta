@@ -9,9 +9,6 @@ mod pages;
 use iced;
 
 fn main() -> iced::Result {
-    let freeeta_yml = freeeta_serial::read_freeeta_config().expect("[ERROR] CONFIG ERROR");
-    // TODO: Deal with the config struct.
-    println!("{:?}", freeeta_yml);
     iced::application(
         "FreeEta",
         main_menu::FreeEta::update,

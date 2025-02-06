@@ -39,6 +39,7 @@ impl FreeEta {
     }
 
     pub fn chart_page(&self) -> Element<MainMenuMessage> {
+        // TODO: Reverse it when all function is completed
         if !self.eta.nodes.is_empty() {
             // TODO: Start ETA analysis!
             container(text("Hello, chart page!").size(65))
@@ -66,6 +67,7 @@ impl FreeEta {
     }
 }
 
+// Default ETA tree
 fn default_chart_page<'a>() -> Element<'a, MainMenuMessage> {
     let page = default_init_event();
     page.into()
@@ -250,4 +252,10 @@ fn default_outcome<'a>(
         ]
         .width(Length::FillPortion(1)),
     ]
+}
+
+// Default interface page
+fn default_interface_page<'a>() -> Element<'a, MainMenuMessage> {
+    let page = default_init_event();
+    page.into()
 }

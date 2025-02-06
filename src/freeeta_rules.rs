@@ -1,5 +1,6 @@
 use iced::widget::{
-    button, column, container, horizontal_rule, horizontal_space, row, text, vertical_rule, vertical_space, Column, Container, Rule
+    button, column, container, horizontal_rule, horizontal_space, row, text, vertical_rule,
+    vertical_space, Column, Container, Rule,
 };
 use iced::{alignment, Color, Length, Theme};
 

@@ -1,41 +1,96 @@
 {
-    "name": "Default-Eta",
-    "api_version": "0.1.0",
-    "company": "default",
-    "staff": "Administroot",
-    "date": "2025-01-24",
-    "phone": "021-13465294604",
-    "mail": "boli_lemon@foxmail.com",
+    "meta": {
+        "name": "Default-Eta",
+        "api_version": "0.1.0",
+        "company": "default",
+        "staff": "Administroot",
+        "date": "2025-01-24",
+        "phone": "021-13465294604",
+        "mail": "boli_lemon@foxmail.com"
+    },
     "nodes": [
         {
             "name": "Init",
+            "pic": {
+                "picture": ".",
+                "axis": {
+                    "x": 200,
+                    "y": 300
+                }
+            },
             "rate": 1.0,
-            "prev": ["None"]
+            "prev": []
         },
         {
             "name": "Pump",
+            "pic": {
+                "picture": "static/png/pump.png",
+                "axis": {
+                    "x": 300,
+                    "y": 400
+                }
+            },
             "rate": 0.5,
-            "prev": ["Init"]
+            "prev": [
+                "Init"
+            ]
         },
         {
             "name": "Valve 1",
+            "pic": {
+                "picture": "static/png/valve.png",
+                "axis": {
+                    "x": 400,
+                    "y": 500
+                }
+            },
             "rate": 0.9,
-            "prev": ["Pump"]
+            "prev": [
+                "Pump"
+            ]
         },
         {
             "name": "Valve 2",
+            "pic": {
+                "picture": "static/png/valve.png",
+                "axis": {
+                    "x": 500,
+                    "y": 600
+                }
+            },
             "rate": 0.9,
-            "prev": ["Valve 1"]
+            "prev": [
+                "Valve 1"
+            ]
         },
         {
             "name": "Valve 3",
+            "pic": {
+                "picture": "static/png/valve.png",
+                "axis": {
+                    "x": 400,
+                    "y": 500
+                }
+            },
             "rate": 0.9,
-            "prev": ["Valve 1"]
+            "prev": [
+                "Valve 1"
+            ]
         },
         {
             "name": "Valve 4",
+            "pic": {
+                "picture": "static/png/valve.png",
+                "axis": {
+                    "x": 400,
+                    "y": 500
+                }
+            },
             "rate": 0.9,
-            "prev": ["Valve 2", "Valve 3"]
+            "prev": [
+                "Valve 2",
+                "Valve 3"
+            ]
         }
     ]
 }

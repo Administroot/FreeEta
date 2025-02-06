@@ -186,13 +186,21 @@ pub fn eta_vertical_branch_style(_theme: &Theme) -> rule::Style {
     }
 }
 
-pub fn eta_output_button_style(
-    _theme: &Theme,
-    status: button::Status,
-) -> button::Style {
+pub fn eta_output_button_style(_theme: &Theme, status: button::Status) -> button::Style {
     match status {
-        button::Status::Hovered => button::Style { background: Some(Background::Color(half_transparency(Color::from_rgb(0.63, 0.62, 0.62)))), ..Default::default()},
-        button::Status::Pressed => button::Style { background: Some(Background::Color(Color::from_rgb(0.63, 0.62, 0.62))), ..Default::default()},
-        button::Status::Disabled | button::Status::Active => button::Style { background: Some(Background::Color(Color::TRANSPARENT)), ..Default::default()},
+        button::Status::Hovered => button::Style {
+            background: Some(Background::Color(half_transparency(Color::from_rgb(
+                0.63, 0.62, 0.62,
+            )))),
+            ..Default::default()
+        },
+        button::Status::Pressed => button::Style {
+            background: Some(Background::Color(Color::from_rgb(0.63, 0.62, 0.62))),
+            ..Default::default()
+        },
+        button::Status::Disabled | button::Status::Active => button::Style {
+            background: Some(Background::Color(Color::TRANSPARENT)),
+            ..Default::default()
+        },
     }
 }

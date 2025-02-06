@@ -59,7 +59,7 @@ impl FreeEta {
                 developer_bookmark_status: false,
                 export_bookmark_status: false,
                 page: Pages::MainMenuPage,
-                eta: EtaEntity::new(),
+                eta: get_eta("default_eta.json"),
             },
             Task::none(),
         )
@@ -315,10 +315,26 @@ impl FreeEta {
             }
         })
     }
+}
 
-    #[allow(dead_code)]
-    /// Get user's customized eta
-    fn get_eta(&mut self, path: &str) {
-        self.eta = freeeta_serial::read_eta_json(path).expect("JSON syntax error");
+/// Get user's customized eta
+fn get_eta(path: &str) -> EtaEntity {
+    freeeta_serial::read_eta_json(path).expect("JSON syntax error")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn read_json_test() {
+        let freeeta = FreeEta::new();
+        assert_ne!(freeeta.0.eta.nodes.is_empty(), true);
+    }
+
+    #[test]
+    fn read_yaml_test() {
+        let freeeta_yml = freeeta_serial::read_freeeta_config().expect("[ERROR] CONFIG ERROR");
+        assert_eq!(freeeta_yml, freeeta_serial::FreeEtaConfig::new());
     }
 }
