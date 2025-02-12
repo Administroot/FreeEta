@@ -18,7 +18,7 @@ use crate::{freeeta_buttons, freeeta_picklists::functional_picklist, freeeta_sty
 pub struct FreeEta {
     // TODO: Actually, I don't need this member.
     file_picklist: Option<String>,
-    mouse_point: Point,
+    pub mouse_point: Point,
     view_bookmark_status: bool,
     eta_bookmark_status: bool,
     developer_bookmark_status: bool,

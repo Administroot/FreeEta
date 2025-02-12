@@ -1,8 +1,10 @@
+mod chart_page;
 mod freeeta_buttons;
 mod freeeta_picklists;
 mod freeeta_rules;
 mod freeeta_serial;
 mod freeeta_styles;
+mod interface_page;
 mod main_menu;
 mod pages;
 
