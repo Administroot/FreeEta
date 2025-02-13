@@ -1,5 +1,4 @@
 use iced::widget::{svg, text, vertical_rule};
-use iced::Length;
 use iced::{
     alignment,
     event::{self, Status},
@@ -8,8 +7,10 @@ use iced::{
     widget::{
         column, container, horizontal_rule, horizontal_space, row, svg::Handle, vertical_space,
     },
+    window::Event::Resized,
     Color, ContentFit, Element, Event, Font, Point, Subscription, Task,
 };
+use iced::{Length, Size};
 
 use crate::freeeta_serial::{self, EtaEntity};
 use crate::pages::Pages;
@@ -25,6 +26,7 @@ pub struct FreeEta {
     export_bookmark_status: bool,
     page: Pages,
     pub eta: EtaEntity,
+    pub window_size: Size,
 }
 
 impl Default for FreeEta {
@@ -46,6 +48,7 @@ pub enum MainMenuMessage {
     DeveloperBookmarkMsg,
     ExportBookmarkMsg,
     DoNothing,
+    WindowSizeUpdated(Size),
 }
 
 impl FreeEta {
@@ -60,6 +63,7 @@ impl FreeEta {
                 export_bookmark_status: false,
                 page: Pages::MainMenuPage,
                 eta: get_eta("default_eta.json"),
+                window_size: Size::ZERO,
             },
             Task::none(),
         )
@@ -135,6 +139,9 @@ impl FreeEta {
                 }
             }
             MainMenuMessage::DoNothing => {}
+            MainMenuMessage::WindowSizeUpdated(s) => {
+                self.window_size = s;
+            }
         }
         Task::none()
     }
@@ -310,6 +317,9 @@ impl FreeEta {
                 // Or using touchboard
                 | (Event::Touch(FingerMoved {position, ..}), Status::Ignored) => {
                     Some(MainMenuMessage::PointUpdated(position))
+                }
+                (Event::Window(Resized(size)), Status::Ignored) => {
+                    Some(MainMenuMessage::WindowSizeUpdated(size))
                 }
                 _ => None
             }
