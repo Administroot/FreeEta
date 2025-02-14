@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::fs::{self, File};
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 /// Metadata of all json file
 pub struct MetaData {
     name: String,
@@ -29,14 +29,14 @@ impl MetaData {
 }
 
 /// Nodes of ETA
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 pub struct EtaVector {
     /// Node name (e.g. "Valve").
     name: String,
     /// Success probability of node
     rate: f32,
     /// Metadata of the node in user interface
-    pic: PictureNode,
+    pub pic: PictureNode,
     /// Previous node. `All` nodes are connected as a tree
     prev: Vec<String>,
 }
@@ -53,13 +53,13 @@ impl EtaVector {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 /// Movable node contains a picture
-struct PictureNode {
+pub struct PictureNode {
     /// Relative path of the picture
     picture: String,
     /// The postion of the node
-    axis: Axis,
+    pub axis: Axis,
 }
 
 #[allow(dead_code)]
@@ -72,10 +72,10 @@ impl PictureNode {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
-struct Axis<T = f32> {
-    x: T,
-    y: T,
+#[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
+pub struct Axis<T = f32> {
+    pub x: T,
+    pub y: T,
 }
 
 #[allow(dead_code)]
@@ -84,25 +84,6 @@ impl<T> Axis<T> {
         Axis { x, y }
     }
 }
-
-// impl Serialize for iced::Point {
-//     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-//     where
-//         S: serde::Serializer {
-//         let mut point = serializer.serialize_struct("axis", 2)?;
-//         point.serialize_field("x", &self.x)?;
-//         point.serialize_field("y", &self.y)?;
-//         point.end()
-//     }
-// }
-
-// impl Deserialize for iced::Point {
-//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-//     where
-//         D: serde::Deserializer<'de> {
-//         deserializer.deserialize_struct("axis", ["x", "y"], visitor)
-//     }
-// }
 
 /// The config struct of FreeEta
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
@@ -150,7 +131,7 @@ pub fn read_freeeta_config() -> Result<FreeEtaConfig, serde_yml::Error> {
 }
 
 /// ETA user personalized
-#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EtaEntity {
     pub meta: MetaData,
     pub nodes: Vec<EtaVector>,
@@ -171,4 +152,11 @@ pub fn read_eta_json(path: &str) -> Result<EtaEntity, serde_json::Error> {
     let content = fs::read_to_string(path).expect("Json syntax error");
     let eta_json: EtaEntity = serde_json::from_str(&content)?;
     Ok(eta_json)
+}
+
+/// Serialize Eta file.
+pub fn update_eta_json(path: &str, eta: EtaEntity) -> Result<(), serde_json::Error> {
+    let content = serde_json::to_string_pretty(&eta)?;
+    fs::write(path, content).expect("Cannot write data to JSON file");
+    Ok(())
 }

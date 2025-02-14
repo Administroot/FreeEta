@@ -186,7 +186,7 @@ pub fn eta_vertical_branch_style(_theme: &Theme) -> rule::Style {
     }
 }
 
-pub fn eta_output_button_style(_theme: &Theme, status: button::Status) -> button::Style {
+pub fn invisiable_button_style(_theme: &Theme, status: button::Status) -> button::Style {
     match status {
         button::Status::Hovered => button::Style {
             background: Some(Background::Color(half_transparency(Color::from_rgb(

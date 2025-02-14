@@ -27,6 +27,7 @@ pub struct FreeEta {
     page: Pages,
     pub eta: EtaEntity,
     pub window_size: Size,
+    pub is_dragging: bool,
 }
 
 impl Default for FreeEta {
@@ -49,6 +50,8 @@ pub enum MainMenuMessage {
     ExportBookmarkMsg,
     DoNothing,
     WindowSizeUpdated(Size),
+    DragStart,
+    DragEnded,
 }
 
 impl FreeEta {
@@ -64,6 +67,7 @@ impl FreeEta {
                 page: Pages::MainMenuPage,
                 eta: get_eta("default_eta.json"),
                 window_size: Size::ZERO,
+                is_dragging: false,
             },
             Task::none(),
         )
@@ -142,6 +146,13 @@ impl FreeEta {
             MainMenuMessage::WindowSizeUpdated(s) => {
                 self.window_size = s;
             }
+            MainMenuMessage::DragStart => {
+                self.is_dragging = true;
+            }
+            MainMenuMessage::DragEnded => {
+                self.is_dragging = false;
+                freeeta_serial::update_eta_json("default_eta.jon", self.eta.clone()).unwrap();
+            }
         }
         Task::none()
     }
@@ -163,7 +174,6 @@ impl FreeEta {
         )
         .style(freeeta_styles::functional_picklist_style);
         let graphics_picklist = functional_picklist(
-            // FIXME: Better use container[svg/png]
             ["⛽ Pop", "🌀 Valve", "➕ Add more..."]
                 .map(|s| s.to_string())
                 .to_vec(),

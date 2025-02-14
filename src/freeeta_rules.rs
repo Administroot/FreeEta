@@ -58,7 +58,7 @@ pub fn eta_output_branch(content: &str) -> Column<MainMenuMessage, Theme> {
             ]
             .align_y(alignment::Vertical::Bottom)
         )
-        .style(freeeta_styles::eta_output_button_style)
+        .style(freeeta_styles::invisiable_button_style)
         .on_press(MainMenuMessage::DoNothing),
         horizontal_rule(2.).style(freeeta_styles::invisiable_rule_style),
     ]
