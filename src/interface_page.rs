@@ -21,20 +21,21 @@ impl FreeEta {
     }
 
     fn default_pump_widget<'a>(&self, pic_path: &str) -> Column<'a, MainMenuMessage> {
+        let level = 1;
         column![
             vertical_space().height(Length::FillPortion(
-                self.get_portion(1, SpacePosition::Upper)
+                self.get_portion(level, SpacePosition::Upper)
             )),
             row![
                 horizontal_rule(1),
                 mouse_area(image(pic_path))
-                    .on_press(MainMenuMessage::DragStart)
-                    .on_release(MainMenuMessage::DragEnded),
+                    .on_press(MainMenuMessage::DragStart(level))
+                    .on_release(MainMenuMessage::DragEnded(level)),
                 image("static/png/Switch.png"),
                 text(format!("{:?}", self.window_size))
             ],
             vertical_space().height(Length::FillPortion(
-                self.get_portion(1, SpacePosition::Lower)
+                self.get_portion(level, SpacePosition::Lower)
             )),
         ]
     }
@@ -46,7 +47,11 @@ impl FreeEta {
         let blocks = 102.;
         let axis_y = axis.y;
 
-        if self.is_dragging {
+        if *self
+            .is_dragging
+            .get(index)
+            .expect("Internal Error: Vector is_dragging is too short.")
+        {
             let window_height = self.window_size.height;
             let widget_y = self.mouse_point.y / window_height;
             let axis = Axis {

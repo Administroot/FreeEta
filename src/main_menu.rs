@@ -27,7 +27,7 @@ pub struct FreeEta {
     page: Pages,
     pub eta: EtaEntity,
     pub window_size: Size,
-    pub is_dragging: bool,
+    pub is_dragging: Vec<bool>,
 }
 
 impl Default for FreeEta {
@@ -50,8 +50,9 @@ pub enum MainMenuMessage {
     ExportBookmarkMsg,
     DoNothing,
     WindowSizeUpdated(Size),
-    DragStart,
-    DragEnded,
+    DragStart(usize),
+    DragEnded(usize),
+    Exit,
 }
 
 impl FreeEta {
@@ -67,7 +68,7 @@ impl FreeEta {
                 page: Pages::MainMenuPage,
                 eta: get_eta("default_eta.json"),
                 window_size: Size::ZERO,
-                is_dragging: false,
+                is_dragging: vec![false, false, false],
             },
             Task::none(),
         )
@@ -146,13 +147,23 @@ impl FreeEta {
             MainMenuMessage::WindowSizeUpdated(s) => {
                 self.window_size = s;
             }
-            MainMenuMessage::DragStart => {
-                self.is_dragging = true;
+            MainMenuMessage::DragStart(index) => {
+                if self.is_dragging.len() < index {
+                    self.is_dragging.push(true);
+                } else {
+                    self.is_dragging[index] = true;
+                }
             }
-            MainMenuMessage::DragEnded => {
-                self.is_dragging = false;
-                freeeta_serial::update_eta_json("default_eta.jon", self.eta.clone()).unwrap();
+            MainMenuMessage::DragEnded(index) => {
+                if self.is_dragging.len() < index {
+                    panic!("Internal Error: Vector is_dragging is too short.");
+                } else {
+                    self.is_dragging[index] = false;
+                }
             }
+            MainMenuMessage::Exit => {
+                freeeta_serial::update_eta_json("default_eta.json", self.eta.clone()).unwrap();
+            },
         }
         Task::none()
     }
