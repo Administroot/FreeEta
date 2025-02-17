@@ -18,5 +18,6 @@ fn main() -> iced::Result {
     )
     .theme(main_menu::FreeEta::theme)
     .subscription(main_menu::FreeEta::subscription)
+    .exit_on_close_request(true)
     .run()
 }

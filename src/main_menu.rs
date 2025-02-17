@@ -10,7 +10,7 @@ use iced::{
     window::Event::Resized,
     Color, ContentFit, Element, Event, Font, Point, Subscription, Task,
 };
-use iced::{Length, Size};
+use iced::{Application, Length, Size};
 
 use crate::freeeta_serial::{self, EtaEntity};
 use crate::pages::Pages;
@@ -52,7 +52,7 @@ pub enum MainMenuMessage {
     WindowSizeUpdated(Size),
     DragStart(usize),
     DragEnded(usize),
-    Exit,
+    Save,
 }
 
 impl FreeEta {
@@ -78,10 +78,11 @@ impl FreeEta {
         match message {
             MainMenuMessage::FilePicklistMsg(s) => {
                 // TODO: Divide different sections
-                self.file_picklist = Some(s);
-            }
-            MainMenuMessage::PointUpdated(p) => {
-                self.mouse_point = p;
+                if s == "💾 Save" {
+                    drop(MainMenuMessage::Save);
+                } else {
+                    self.file_picklist = Some(s);
+                }
             }
             MainMenuMessage::GraphicsPicklistMsg(s) => {
                 // TODO: Divide different sections
@@ -143,6 +144,9 @@ impl FreeEta {
                     self.page = Pages::ExportPage;
                 }
             }
+            MainMenuMessage::PointUpdated(p) => {
+                self.mouse_point = p;
+            }
             MainMenuMessage::DoNothing => {}
             MainMenuMessage::WindowSizeUpdated(s) => {
                 self.window_size = s;
@@ -161,7 +165,7 @@ impl FreeEta {
                     self.is_dragging[index] = false;
                 }
             }
-            MainMenuMessage::Exit => {
+            MainMenuMessage::Save => {
                 freeeta_serial::update_eta_json("default_eta.json", self.eta.clone()).unwrap();
             },
         }
