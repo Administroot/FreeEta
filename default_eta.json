@@ -28,7 +28,7 @@
         "picture": "static/png/pump.png",
         "axis": {
           "x": 0.25,
-          "y": 0.21594349
+          "y": 0.23309788
         }
       },
       "prev": [
@@ -42,7 +42,7 @@
         "picture": "static/png/valve.png",
         "axis": {
           "x": 0.25,
-          "y": 0.7
+          "y": 0.19273461
         }
       },
       "prev": [

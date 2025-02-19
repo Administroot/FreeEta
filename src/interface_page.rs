@@ -1,5 +1,5 @@
 use iced::{
-    widget::{column, horizontal_rule, image, mouse_area, row, text, vertical_space, Column},
+    widget::{column, horizontal_rule, image, mouse_area, row, vertical_space, Column},
     Element, Length,
 };
 
@@ -16,7 +16,10 @@ enum SpacePosition {
 impl FreeEta {
     // Default interface page
     pub fn default_interface_page<'a>(&self) -> Element<'a, MainMenuMessage> {
-        let page = self.default_pump_widget("static/png/Pump.png");
+        let page = row![
+            self.default_pump_widget("static/png/Pump_1.png"),
+            self.default_valve_1("static/png/Switch.png")
+        ];
         page.into()
     }
 
@@ -31,8 +34,24 @@ impl FreeEta {
                 mouse_area(image(pic_path))
                     .on_press(MainMenuMessage::DragStart(level))
                     .on_release(MainMenuMessage::DragEnded(level)),
-                image("static/png/Switch.png"),
-                text(format!("{:?}", self.window_size))
+            ],
+            vertical_space().height(Length::FillPortion(
+                self.get_portion(level, SpacePosition::Lower)
+            )),
+        ]
+    }
+
+    fn default_valve_1<'a>(&self, pic_path: &str) -> Column<'a, MainMenuMessage> {
+        let level = 2;
+        column![
+            vertical_space().height(Length::FillPortion(
+                self.get_portion(level, SpacePosition::Upper)
+            )),
+            row![
+                horizontal_rule(1),
+                mouse_area(image(pic_path))
+                    .on_press(MainMenuMessage::DragStart(level))
+                    .on_release(MainMenuMessage::DragEnded(level)),
             ],
             vertical_space().height(Length::FillPortion(
                 self.get_portion(level, SpacePosition::Lower)
@@ -42,8 +61,8 @@ impl FreeEta {
 
     /// Get Length::FillPortion(`value`)
     fn get_portion(&self, index: usize, position: SpacePosition) -> u16 {
-        // TODO: 读取node，找到Y轴坐标。如果移动的话就改掉，没移动就直接返回
-        let axis = read_node_axis(index).unwrap();
+        // Read from json
+        let axis = &self.eta.nodes[index].pic.axis;
         let blocks = 102.;
         let axis_y = axis.y;
 
@@ -83,15 +102,5 @@ impl FreeEta {
 
         // Write to JSON file
         freeeta_serial::update_eta_json("default_eta.json", old_eta)
-    }
-}
-
-/// Get axis of a node (read from JSON file)
-fn read_node_axis(index: usize) -> Result<Axis, Box<dyn std::error::Error>> {
-    let eta_from_json =
-        freeeta_serial::read_eta_json("default_eta.json").expect("JSON format error");
-    match eta_from_json.nodes.get(index) {
-        Some(node) => Ok(node.pic.axis.clone()),
-        None => Err("Node not found".into()),
     }
 }

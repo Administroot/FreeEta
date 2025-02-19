@@ -10,7 +10,7 @@ use iced::{
     window::Event::Resized,
     Color, ContentFit, Element, Event, Font, Point, Subscription, Task,
 };
-use iced::{Application, Length, Size};
+use iced::{Length, Size};
 
 use crate::freeeta_serial::{self, EtaEntity};
 use crate::pages::Pages;
@@ -52,7 +52,8 @@ pub enum MainMenuMessage {
     WindowSizeUpdated(Size),
     DragStart(usize),
     DragEnded(usize),
-    Save,
+    Save(String),
+    Sync(String),
 }
 
 impl FreeEta {
@@ -79,7 +80,9 @@ impl FreeEta {
             MainMenuMessage::FilePicklistMsg(s) => {
                 // TODO: Divide different sections
                 if s == "💾 Save" {
-                    drop(MainMenuMessage::Save);
+                    MainMenuMessage::Save(String::from("default_eta.json"));
+                } else if s == "📂 Open.." {
+                    MainMenuMessage::Sync(String::from("default_eta.json"));
                 } else {
                     self.file_picklist = Some(s);
                 }
@@ -98,7 +101,11 @@ impl FreeEta {
             }
             MainMenuMessage::HelpPicklistMsg(s) => {
                 // TODO: Divide different sections
-                self.file_picklist = Some(s);
+                if s == "🐛Debug" {
+                    println!("{:?}", self.eta.nodes)
+                } else {
+                    self.file_picklist = Some(s)
+                };
             }
             MainMenuMessage::ViewBookmarkMsg => {
                 self.view_bookmark_status = !self.view_bookmark_status;
@@ -164,10 +171,15 @@ impl FreeEta {
                 } else {
                     self.is_dragging[index] = false;
                 }
+                self.eta =
+                    freeeta_serial::read_eta_json("default_eta.json").expect("JSON format error");
             }
-            MainMenuMessage::Save => {
-                freeeta_serial::update_eta_json("default_eta.json", self.eta.clone()).unwrap();
-            },
+            MainMenuMessage::Save(s) => {
+                freeeta_serial::update_eta_json(&s, self.eta.clone()).unwrap();
+            }
+            MainMenuMessage::Sync(s) => {
+                self.eta = freeeta_serial::read_eta_json(&s).expect("JSON format error");
+            }
         }
         Task::none()
     }
@@ -216,9 +228,14 @@ impl FreeEta {
         )
         .style(freeeta_styles::functional_picklist_style);
         let help_picklist = functional_picklist(
-            ["📔 FreeEta Handbook", "🌏 About FreeEta", "🧊 About ICED"]
-                .map(|s| s.to_string())
-                .to_vec(),
+            [
+                "📔 FreeEta Handbook",
+                "🌏 About FreeEta",
+                "🧊 About ICED",
+                "🐛Debug",
+            ]
+            .map(|s| s.to_string())
+            .to_vec(),
             self.file_picklist.clone(),
             |s| MainMenuMessage::HelpPicklistMsg(s),
             "🤝 Help",
